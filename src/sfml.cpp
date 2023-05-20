@@ -24,9 +24,9 @@ game_loop::game_loop()
     this->menu_assets[0].createRectangleShape("./ressources/menu/menu_back.png", (sf::Vector2f){1920,1080}, (sf::Vector2f){-30,0});
     this->menu_assets[1].createRectangleShape("./ressources/menu/play.png", (sf::Vector2f){200,200}, (sf::Vector2f){825,700});
     this->menu_assets[2].createRectangleShape("./ressources/menu/play_c.png", (sf::Vector2f){200,200}, (sf::Vector2f){825,700});
-    this->menu_assets[3].createRectangleShape("./ressources/menu/defeat_screan.png", (sf::Vector2f){1880,1040}, (sf::Vector2f){-30,0});
-    this->menu_assets[4].createRectangleShape("./ressources/menu/return.png", (sf::Vector2f){200,200}, (sf::Vector2f){1470,740});
-    this->menu_assets[5].createRectangleShape("./ressources/menu/return_c.png", (sf::Vector2f){200,200}, (sf::Vector2f){1470,740});
+    this->menu_assets[3].createRectangleShape("./ressources/menu/defeat_screen.png", (sf::Vector2f){1880,1040}, (sf::Vector2f){-30,0});
+    this->menu_assets[4].createRectangleShape("./ressources/menu/return.png", (sf::Vector2f){200,200}, (sf::Vector2f){1470,800});
+    this->menu_assets[5].createRectangleShape("./ressources/menu/return_c.png", (sf::Vector2f){200,200}, (sf::Vector2f){1470,800});
     std::ifstream infile("./ressources/maps/level1.txt");
     std::string line;
     int x = 0;
@@ -97,7 +97,7 @@ void game_loop::draw()
     }
     if (this->game_status == 3) {
         this->menu_assets[3].drawRectangleShape(win);
-        if (sf::Mouse::getPosition(win).x >= 1470 && sf::Mouse::getPosition(win).x <= 1670 && sf::Mouse::getPosition(win).y >= 740 && sf::Mouse::getPosition(win).y <= 940) {
+        if (sf::Mouse::getPosition(win).x >= 1470 && sf::Mouse::getPosition(win).x <= 1670 && sf::Mouse::getPosition(win).y >= 800 && sf::Mouse::getPosition(win).y <= 1000) {
             this->menu_assets[5].drawRectangleShape(win);
         } else
             this->menu_assets[4].drawRectangleShape(win);
