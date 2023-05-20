@@ -11,8 +11,8 @@
     #include "GameObjects/Text.hpp"
     #include "GameObjects/Rectangleshape.hpp"
     #include "Parser/Parser.hpp"
-    #define JUMP 5
-    #define HEIGHT_JUMP 20
+    #define JUMP 3
+    #define HEIGHT_JUMP 21
 
 class game_loop {
     public:
@@ -20,6 +20,8 @@ class game_loop {
         ~game_loop() {
             this->music.stop();
             this->win.close();
+            delete this->view;
+            delete this->view1;
         };
         void loop();
         int event();
@@ -49,6 +51,11 @@ class game_loop {
         int speed_jump;
 
         std::vector<sf::RectangleShape> _rect_tab = {};
+
+        sf::View *view;
+        sf::View *view1;
+
+        int movement = 0;
 
         sf::RectangleShape _perso;
         sf::Texture _texture_perso;

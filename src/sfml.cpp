@@ -31,6 +31,8 @@ game_loop::game_loop()
     this->menu_assets[3].createRectangleShape("./ressources/menu/defeat_screen.jpg", (sf::Vector2f){1880,1040}, (sf::Vector2f){-30,0});
     this->menu_assets[4].createRectangleShape("./ressources/menu/return.png", (sf::Vector2f){200,200}, (sf::Vector2f){1470,800});
     this->menu_assets[5].createRectangleShape("./ressources/menu/return_c.png", (sf::Vector2f){200,200}, (sf::Vector2f){1470,800});
+    this->view = new sf::View(sf::FloatRect(0, 0, 640, 230));
+    this->view1 = new sf::View(sf::FloatRect(0, 0, 1920, 1080));
     std::ifstream infile("./ressources/maps/level1.txt");
     std::string line;
     int x = 0;
@@ -58,19 +60,27 @@ void game_loop::loop()
             return;
         win.clear(sf::Color::Black);
         if (this->game_status == 1) {
+            win.setView(*view1);
             draw();
             win.display();
         }
         if (this->game_status == 3) {
+            win.setView(*view1);
             draw();
             win.display();
         }
-        if (this->game_status == 4)
+        if (this->game_status == 4) {
+            win.setView(*view);
             this->level1();
-        if (this->game_status == 5)
+        }
+        if (this->game_status == 5) {
+            win.setView(*view);
             this->level2();
-        if (this->game_status == 6)
+        }
+        if (this->game_status == 6) {
+            win.setView(*view);
             this->level3();
+        }
         deltaTime += clock.restart();
     }
 }
@@ -156,7 +166,7 @@ void game_loop::level1()
                     sf::RectangleShape rect;
                     rect.setSize(sf::Vector2f(size[k], size[k]));
                     rect.setFillColor(color2[k]);
-                    rect.setPosition(j * 20 + (10 - (size[k]/2)), i * 20 + (10 - (size[k]/2)));
+                    rect.setPosition((j * 20 + (10 - (size[k]/2))) - movement, i * 20 + (10 - (size[k]/2)));
                     win.draw(rect);
                     _rect_tab.push_back(rect);
                 }
@@ -166,6 +176,7 @@ void game_loop::level1()
     sf::RectangleShape rect = _perso;
     win.draw(rect);
     if (deltaTime.asMilliseconds() >= 50) {
+        movement += 10;
         if (speed_jump != -1 && speed_jump < HEIGHT_JUMP * 2 + JUMP) {
             _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
             speed_jump += JUMP;
@@ -200,7 +211,7 @@ void game_loop::level2()
                     sf::RectangleShape rect;
                     rect.setSize(sf::Vector2f(size[k], size[k]));
                     rect.setFillColor(color2[k]);
-                    rect.setPosition(j * 20 + (10 - (size[k]/2)), i * 20 + (10 - (size[k]/2)));
+                    rect.setPosition((j * 20 + (10 - (size[k]/2))) - movement, i * 20 + (10 - (size[k]/2)));
                     win.draw(rect);
                     _rect_tab.push_back(rect);
                 }
@@ -210,6 +221,7 @@ void game_loop::level2()
     sf::RectangleShape rect = _perso;
     win.draw(rect);
     if (deltaTime.asMilliseconds() >= 50) {
+        movement += 10;
         if (speed_jump != -1 && speed_jump < HEIGHT_JUMP * 2 + JUMP) {
             _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
             speed_jump += JUMP;
@@ -244,7 +256,7 @@ void game_loop::level3()
                     sf::RectangleShape rect;
                     rect.setSize(sf::Vector2f(size[k], size[k]));
                     rect.setFillColor(color2[k]);
-                    rect.setPosition(j * 20 + (10 - (size[k]/2)), i * 20 + (10 - (size[k]/2)));
+                    rect.setPosition((j * 20 + (10 - (size[k]/2))) - movement, i * 20 + (10 - (size[k]/2)));
                     win.draw(rect);
                     _rect_tab.push_back(rect);
                 }
@@ -254,6 +266,7 @@ void game_loop::level3()
     sf::RectangleShape rect = _perso;
     win.draw(rect);
     if (deltaTime.asMilliseconds() >= 50) {
+        movement += 10;
         if (speed_jump != -1 && speed_jump < HEIGHT_JUMP * 2 + JUMP) {
             _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
             speed_jump += JUMP;
