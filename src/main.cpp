@@ -10,7 +10,6 @@
 int main(void)
 {
     game_loop game;
-    game.init();
     game.loop();
     return (0);
 }

@@ -26,18 +26,18 @@ class Parser {
         Parser();
         ~Parser();
 
-        void level1();
-        void level2();
-        void level3();
+        void level1(sf::RenderWindow window);
+        void level2(sf::RenderWindow window);
+        void level3(sf::RenderWindow window);
 
     protected:
     private:
         std::map<int, std::string> _map1;
         std::map<int, std::string> _map2;
         std::map<int, std::string> _map3;
+        sf::Color _color;
         std::list<Input> Inputs;
         sf::Event Event;
-        sf::RenderWindow window;
         sf::Music music;
 };
 

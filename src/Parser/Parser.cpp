@@ -24,13 +24,15 @@ Parser::Parser()
     int z = 0;
     for (; std::getline(infile3, line3); z++)
         this->_map3[z] = line3;
+    this->_color = sf::Color::White;
+    
 }
 
 Parser::~Parser()
 {
 }
 
-void Parser::level1()
+void Parser::level1(sf::RenderWindow window)
 {
     std::string filepath = "./ressources/music/level1.ogg";
     if (music.getStatus() == music.Playing)
@@ -56,13 +58,17 @@ void Parser::level1()
                 this->Inputs.push_front(LEFT);
             if (Event.key.code == sf::Keyboard::Right)
                 this->Inputs.push_front(RIGHT);
-            if (Event.key.code == sf::Keyboard::Enter)
-                this->Inputs.push_front(SWITCH);
+            if (Event.key.code == sf::Keyboard::Enter){
+                if (this->_color == sf::Color::White)
+                    this->_color = sf::Color::Black;
+                else
+                    this->_color = sf::Color::White;
+            }
         }
     }
     window.clear();
     std::vector<std::string> color = {" ", "W", "B"};
-    std::vector<sf::Color> color2 = {sf::Color::White, sf::Color::White, sf::Color::Black};
+    std::vector<sf::Color> color2 = {_color, sf::Color::White, sf::Color::Black};
     std::vector<float> size = {32, 32, 32};
     size_t i = 0;
     size_t j = 0;
@@ -82,7 +88,7 @@ void Parser::level1()
     window.display();
 }
 
-void Parser::level2()
+void Parser::level2(sf::RenderWindow window)
 {
     std::string filepath = "./ressources/music/level2.ogg";
     if (music.getStatus() == music.Playing)
@@ -108,13 +114,17 @@ void Parser::level2()
                 this->Inputs.push_front(LEFT);
             if (Event.key.code == sf::Keyboard::Right)
                 this->Inputs.push_front(RIGHT);
-            if (Event.key.code == sf::Keyboard::Enter)
-                this->Inputs.push_front(SWITCH);
+            if (Event.key.code == sf::Keyboard::Enter){
+                if (this->_color == sf::Color::White)
+                    this->_color = sf::Color::Black;
+                else
+                    this->_color = sf::Color::White;
+            }
         }
     }
     window.clear();
     std::vector<std::string> color = {" ", "W", "B"};
-    std::vector<sf::Color> color2 = {sf::Color::White, sf::Color::White, sf::Color::Black};
+    std::vector<sf::Color> color2 = {_color, sf::Color::White, sf::Color::Black};
     std::vector<float> size = {32, 32, 32};
     size_t i = 0;
     size_t j = 0;
@@ -134,7 +144,7 @@ void Parser::level2()
     window.display();
 }
 
-void Parser::level3()
+void Parser::level3(sf::RenderWindow window)
 {
     std::string filepath = "./ressources/music/level3.ogg";
     if (music.getStatus() == music.Playing)
@@ -160,13 +170,17 @@ void Parser::level3()
                 this->Inputs.push_front(LEFT);
             if (Event.key.code == sf::Keyboard::Right)
                 this->Inputs.push_front(RIGHT);
-            if (Event.key.code == sf::Keyboard::Enter)
-                this->Inputs.push_front(SWITCH);
+            if (Event.key.code == sf::Keyboard::Enter) {
+                if (this->_color == sf::Color::White)
+                    this->_color = sf::Color::Black;
+                else
+                    this->_color = sf::Color::White;
+            }
         }
     }
     window.clear();
     std::vector<std::string> color = {" ", "W", "B"};
-    std::vector<sf::Color> color2 = {sf::Color::White, sf::Color::White, sf::Color::Black};
+    std::vector<sf::Color> color2 = {_color, sf::Color::White, sf::Color::Black};
     std::vector<float> size = {32, 32, 32};
     size_t i = 0;
     size_t j = 0;
