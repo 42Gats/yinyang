@@ -27,7 +27,7 @@ class game_loop {
         void loop();
         int event();
         void draw();
-
+        void jump();
         void level1();
         void level2();
         void level3();
@@ -52,7 +52,7 @@ class game_loop {
         sf::Time deltaTime;
         int speed_jump;
 
-        std::vector<sf::RectangleShape> _rect_tab = {};
+        std::vector<sf::RectangleShape> _rect_tab;
 
         sf::View *view;
         sf::View *view1;

@@ -168,6 +168,50 @@ void game_loop::draw()
     }
 }
 
+void game_loop::jump()
+{
+    sf::RectangleShape rect = _perso;
+    win.draw(rect);
+    if (deltaTime.asMilliseconds() >= 50) {
+        movement += 10;
+
+        if (speed_jump != -1) {
+            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
+            speed_jump += JUMP;
+        }
+
+        for (size_t i = 0; i < _rect_tab.size(); i++) {
+            sf::Color fillcolor = _rect_tab[i].getFillColor();
+
+            if (_color == sf::Color::Black && fillcolor == sf::Color::White) {
+                std::cout << "white " << std::endl;
+                sf::FloatRect entity = _rect_tab[i].getGlobalBounds();
+                sf::FloatRect player = _perso.getGlobalBounds();
+                if (player.intersects(entity)) {
+                    speed_jump = -1;
+                }
+            }
+            if (_color == sf::Color::White && fillcolor == sf::Color::Black) {
+                std::cout << "black " << std::endl;
+                sf::FloatRect entity = _rect_tab[i].getGlobalBounds();
+                sf::FloatRect player = _perso.getGlobalBounds();
+                if (player.intersects(entity)) {
+                    speed_jump = -1;
+                }
+            }
+        }
+        
+        if (_rect_perso.left + 32 < 128) {
+            _rect_perso = sf::IntRect(_rect_perso.left + 32, 0, 32, 32);
+            deltaTime = sf::seconds(0);
+        } else {
+            _rect_perso = sf::IntRect(0, 0, 32, 32);
+            deltaTime = sf::seconds(0);
+        }
+        _perso.setTextureRect(_rect_perso);
+    }
+}
+
 void game_loop::level1()
 {
     win.clear();
@@ -176,11 +220,11 @@ void game_loop::level1()
     std::vector<float> size = {32, 32, 32};
     size_t i = 0;
     size_t j = 0;
+    _rect_tab.clear();
     for (; i < _map1.size(); i++) {
         for (j = 0; j < _map1[i].size(); j++) {
             for (size_t k = 0; k < color.size(); k++) {
                 if (_map1[i][j] == color[k][0]) {
-                    _rect_tab.clear();
                     sf::RectangleShape rect;
                     rect.setSize(sf::Vector2f(size[k], size[k]));
                     rect.setFillColor(color2[k]);
@@ -191,25 +235,7 @@ void game_loop::level1()
             }
         }
     }
-    sf::RectangleShape rect = _perso;
-    win.draw(rect);
-    if (deltaTime.asMilliseconds() >= 50) {
-        movement += 10;
-        if (speed_jump != -1 && speed_jump < HEIGHT_JUMP * 2 + JUMP) {
-            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
-            speed_jump += JUMP;
-        } else {
-            speed_jump = -1;
-        }
-        if (_rect_perso.left + 32 < 128) {
-            _rect_perso = sf::IntRect(_rect_perso.left + 32, 0, 32, 32);
-            deltaTime = sf::seconds(0);
-        } else {
-            _rect_perso = sf::IntRect(0, 0, 32, 32);
-            deltaTime = sf::seconds(0);
-        }
-        _perso.setTextureRect(_rect_perso);
-    }
+    jump();
     win.display();
 }
 
@@ -221,11 +247,11 @@ void game_loop::level2()
     std::vector<float> size = {32, 32, 32};
     size_t i = 0;
     size_t j = 0;
+    _rect_tab.clear();
     for (; i < _map2.size(); i++) {
         for (j = 0; j < _map2[i].size(); j++) {
             for (size_t k = 0; k < color.size(); k++) {
                 if (_map2[i][j] == color[k][0]) {
-                    _rect_tab.clear();
                     sf::RectangleShape rect;
                     rect.setSize(sf::Vector2f(size[k], size[k]));
                     rect.setFillColor(color2[k]);
@@ -236,25 +262,7 @@ void game_loop::level2()
             }
         }
     }
-    sf::RectangleShape rect = _perso;
-    win.draw(rect);
-    if (deltaTime.asMilliseconds() >= 50) {
-        movement += 10;
-        if (speed_jump != -1 && speed_jump < HEIGHT_JUMP * 2 + JUMP) {
-            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
-            speed_jump += JUMP;
-        } else {
-            speed_jump = -1;
-        }
-        if (_rect_perso.left + 32 < 128) {
-            _rect_perso = sf::IntRect(_rect_perso.left + 32, 0, 32, 32);
-            deltaTime = sf::seconds(0);
-        } else {
-            _rect_perso = sf::IntRect(0, 0, 32, 32);
-            deltaTime = sf::seconds(0);
-        }
-        _perso.setTextureRect(_rect_perso);
-    }
+    jump();
     win.display();
 }
 
@@ -266,11 +274,11 @@ void game_loop::level3()
     std::vector<float> size = {32, 32, 32};
     size_t i = 0;
     size_t j = 0;
+    _rect_tab.clear();
     for (; i < _map3.size(); i++) {
         for (j = 0; j < _map3[i].size(); j++) {
             for (size_t k = 0; k < color.size(); k++) {
                 if (_map3[i][j] == color[k][0]) {
-                    _rect_tab.clear();
                     sf::RectangleShape rect;
                     rect.setSize(sf::Vector2f(size[k], size[k]));
                     rect.setFillColor(color2[k]);
@@ -281,24 +289,6 @@ void game_loop::level3()
             }
         }
     }
-    sf::RectangleShape rect = _perso;
-    win.draw(rect);
-    if (deltaTime.asMilliseconds() >= 50) {
-        movement += 10;
-        if (speed_jump != -1 && speed_jump < HEIGHT_JUMP * 2 + JUMP) {
-            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
-            speed_jump += JUMP;
-        } else {
-            speed_jump = -1;
-        }
-        if (_rect_perso.left + 32 < 128) {
-            _rect_perso = sf::IntRect(_rect_perso.left + 32, 0, 32, 32);
-            deltaTime = sf::seconds(0);
-        } else {
-            _rect_perso = sf::IntRect(0, 0, 32, 32);
-            deltaTime = sf::seconds(0);
-        }
-        _perso.setTextureRect(_rect_perso);
-    }
+    jump();
     win.display();
 }
