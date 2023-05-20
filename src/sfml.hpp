@@ -21,6 +21,8 @@ class game_loop {
         sf::RenderWindow win = sf::RenderWindow(sf::VideoMode(1920, 1080), "Raccoon Window");
         RectangleShape rect;
         Text text;
+        std::vector<RectangleShape> menu_assets;
+        int game_status;
 };
 
 #endif /* !SFML_HPP_ */
