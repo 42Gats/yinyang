@@ -23,7 +23,7 @@ level_selector::level_selector()
     text.createText("Choose Level", "./assets/thepolice.ttf", 120, (sf::Vector2f){570,80});
     text.colorText(0, sf::Color::Black);
     selector_text.push_back(text);
-    is_moving = 0;
+    is_moving = 1;
     level_selected = 1;
 }
 

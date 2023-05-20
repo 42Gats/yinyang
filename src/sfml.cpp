@@ -89,13 +89,13 @@ void game_loop::loop()
         {
             win.setView(*view);
             this->level3();
-            if (this->game_status == 10)
-            {
-                selector_menu.draw(win);
-                win.display();
-            }
-            deltaTime += clock.restart();
         }
+        if (this->game_status == 10)
+        {
+            selector_menu.draw(win);
+            win.display();
+        }
+        deltaTime += clock.restart();
     }
 }
 
@@ -106,7 +106,7 @@ int game_loop::event()
             sf::Vector2i mousePosition = sf::Mouse::getPosition(win);
             sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
             if (this->menu_assets[2].dimensions(0).contains(mousePositionFloat)) {
-                    this->game_status = 3;
+                    this->game_status = 10;
             }
         }
         if (this->game_status == 3 && Event.type == sf::Event::MouseButtonPressed && Event.mouseButton.button == sf::Mouse::Left) {
@@ -127,15 +127,7 @@ int game_loop::event()
                 if (speed_jump == -1)
                     speed_jump = 0;
             }
-            if (Event.key.code == sf::Keyboard::Left && this->game_status != 1) {
-                if (this->game_status > 4)
-                    this->game_status -= 1;
-            }
-            if (Event.key.code == sf::Keyboard::Right && this->game_status != 1) {
-                if (this->game_status < 6)
-                    this->game_status += 1;
-            }
-            if (Event.key.code == sf::Keyboard::Enter){
+            if (Event.key.code == sf::Keyboard::Enter && this->game_status != 10) {
                 if (this->_color == sf::Color::White)
                     this->_color = sf::Color::Black;
                 else
@@ -143,10 +135,15 @@ int game_loop::event()
             }
             // Selector menu
             if (Event.key.code == sf::Keyboard::Right && this->game_status == 10) {
-                selector_menu.move(selector_menu.getLevelSelected() + 1);
+                if (selector_menu.getLevelSelected() < 3)
+                    selector_menu.move(selector_menu.getLevelSelected() + 1);
             }
             if (Event.key.code == sf::Keyboard::Left && this->game_status == 10) {
-                selector_menu.move(selector_menu.getLevelSelected() - 1);
+                if (selector_menu.getLevelSelected() > 0)
+                    selector_menu.move(selector_menu.getLevelSelected() - 1);
+            }
+            if (Event.key.code == sf::Keyboard::Enter && this->game_status == 10) {
+                this->game_status = selector_menu.getLevelSelected() + 3;
             }
         }
     }
@@ -168,9 +165,6 @@ void game_loop::draw()
             this->menu_assets[5].drawRectangleShape(win);
         } else
             this->menu_assets[4].drawRectangleShape(win);
-    }
-    if (this->game_status == 10) {
-        selector_menu.draw(win);
     }
 }
 
