@@ -18,8 +18,15 @@ game_loop::game_loop()
     win.create(sf::VideoMode(1920, 1080), "YinYang");
     win.setFramerateLimit(60);
     this->game_status = 1;
-    rect.createRectangleShape("./assets/raccoon.jpeg", (sf::Vector2f){219,230}, (sf::Vector2f){0,0});
-    text.createText("Salut!", "./assets/arial.ttf", 10, (sf::Vector2f){500,100});
+
+
+
+    _perso = sf::RectangleShape(sf::Vector2f(32, 32));
+    _texture_perso = sf::Texture();
+    _texture_perso.loadFromFile("./ressources/character/TiM_anim2.png", sf::IntRect(0, 0, 32, 32));
+    _perso.setTexture(&_texture_perso);
+    _perso.setPosition(sf::Vector2f(100, 100));
+
     this->menu_assets.resize(6);
     this->menu_assets[0].createRectangleShape("./ressources/menu/menu_back.png", (sf::Vector2f){1920,1080}, (sf::Vector2f){-30,0});
     this->menu_assets[1].createRectangleShape("./ressources/menu/play.png", (sf::Vector2f){200,200}, (sf::Vector2f){825,700});
@@ -43,6 +50,8 @@ game_loop::game_loop()
     for (; std::getline(infile3, line3); z++)
         this->_map3[z] = line3;
     this->_color = sf::Color::White;
+
+    this->speed_jump = -1;
 }
 
 void game_loop::loop()
@@ -65,6 +74,7 @@ void game_loop::loop()
             this->level2();
         if (this->game_status == 6)
             this->level3();
+        deltaTime = clock.restart();
     }
 }
 
@@ -92,8 +102,9 @@ int game_loop::event()
                 return (84);
             if (Event.key.code == sf::Keyboard::M)
                 this->game_status = 1;
-            if (Event.key.code == sf::Keyboard::Up)
-                this->game_status = 1;
+            if (Event.key.code == sf::Keyboard::Up) {
+                speed_jump = 0;
+            }
             if (Event.key.code == sf::Keyboard::Left) {
                 if (this->game_status > 4)
                     this->game_status -= 1;
@@ -110,13 +121,17 @@ int game_loop::event()
             }
         }
     }
+    if (deltaTime >= sf::seconds(0.1) && speed_jump >= 0 && speed_jump <= 20) {
+        _perso.setPosition(sf::Vector2f(_perso.getPosition().y - 20 - speed_jump, _perso.getPosition().x));
+        speed_jump += 1;
+    } else {
+        speed_jump = -1;
+    }
     return (0);
 }
 
 void game_loop::draw()
 {
-    rect.drawRectangleShape(win);
-    text.drawText(win);
     if (this->game_status == 1) {
         this->menu_assets[0].drawRectangleShape(win);
         if (sf::Mouse::getPosition(win).x >= 825 && sf::Mouse::getPosition(win).x <= 1025 && sf::Mouse::getPosition(win).y >= 700 && sf::Mouse::getPosition(win).y <= 900) {
@@ -154,6 +169,20 @@ void game_loop::level1()
             }
         }
     }
+    sf::RectangleShape rect = _perso;
+    win.draw(rect);
+
+
+
+    if (deltaTime.asMilliseconds() >= 20) {
+        if (_rect_perso.left + 32 <= 128)
+            _rect_perso = sf::IntRect(_rect_perso.left + 32, _rect_perso.top, 32, 32);
+        else
+            _rect_perso = sf::IntRect(0, _rect_perso.top, 32, 32);
+        _perso.setTextureRect(_rect_perso);
+    }
+
+    
     win.display();
 }
 

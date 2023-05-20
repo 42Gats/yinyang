@@ -11,6 +11,7 @@
     #include "GameObjects/Text.hpp"
     #include "GameObjects/Rectangleshape.hpp"
     #include "Parser/Parser.hpp"
+    #define PERSO 0
 
 class game_loop {
     public:
@@ -28,7 +29,7 @@ class game_loop {
         void level3();
     private:
         sf::RenderWindow win;
-        RectangleShape rect;
+        RectangleShape _rect;
         Text text;
         std::vector<RectangleShape> menu_assets;
         int game_status;
@@ -41,6 +42,16 @@ class game_loop {
         std::list<Input> Inputs;
         sf::Event Event;
         sf::Music music;
+
+        sf::Clock clock;
+        sf::Time deltaTime;
+        int speed_jump;
+
+
+        sf::RectangleShape _perso;
+        sf::Texture _texture_perso;
+        sf::IntRect _rect_perso;
+
 };
 
 #endif /* !SFML_HPP_ */
