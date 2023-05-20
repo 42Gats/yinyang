@@ -11,7 +11,7 @@
     #include "GameObjects/Text.hpp"
     #include "GameObjects/Rectangleshape.hpp"
     #include "Parser/Parser.hpp"
-    #define PERSO 0
+    #define JUMP 5
 
 class game_loop {
     public:

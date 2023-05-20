@@ -18,16 +18,12 @@ game_loop::game_loop()
     win.create(sf::VideoMode(1920, 1080), "YinYang");
     win.setFramerateLimit(60);
     this->game_status = 1;
-
-
-
     _perso = sf::RectangleShape(sf::Vector2f(32, 32));
     _texture_perso = sf::Texture();
     _texture_perso.loadFromFile("./ressources/character/TiM_anim2.png");
     _perso.setTexture(&_texture_perso);
     _perso.setPosition(sf::Vector2f(100, 100));
     _rect_perso = sf::IntRect(0, 0, 32, 32);
-
     this->menu_assets.resize(6);
     this->menu_assets[0].createRectangleShape("./ressources/menu/menu_back.png", (sf::Vector2f){1920,1080}, (sf::Vector2f){-30,0});
     this->menu_assets[1].createRectangleShape("./ressources/menu/play.png", (sf::Vector2f){200,200}, (sf::Vector2f){825,700});
@@ -103,14 +99,15 @@ int game_loop::event()
                 return (84);
             if (Event.key.code == sf::Keyboard::M)
                 this->game_status = 1;
-            if (Event.key.code == sf::Keyboard::Up) {
-                speed_jump = 0;
+            if (Event.key.code == sf::Keyboard::Space && this->game_status != 1) {
+                if (speed_jump == -1)
+                    speed_jump = 0;
             }
-            if (Event.key.code == sf::Keyboard::Left) {
+            if (Event.key.code == sf::Keyboard::Left && this->game_status != 1) {
                 if (this->game_status > 4)
                     this->game_status -= 1;
             }
-            if (Event.key.code == sf::Keyboard::Right) {
+            if (Event.key.code == sf::Keyboard::Right && this->game_status != 1) {
                 if (this->game_status < 6)
                     this->game_status += 1;
             }
@@ -121,12 +118,6 @@ int game_loop::event()
                     this->_color = sf::Color::White;
             }
         }
-    }
-    if (deltaTime >= sf::seconds(0.1) && speed_jump >= 0 && speed_jump <= 20) {
-        _perso.setPosition(sf::Vector2f(_perso.getPosition().y - 20 - speed_jump, _perso.getPosition().x));
-        speed_jump += 1;
-    } else {
-        speed_jump = -1;
     }
     return (0);
 }
@@ -172,10 +163,13 @@ void game_loop::level1()
     }
     sf::RectangleShape rect = _perso;
     win.draw(rect);
-
-
-
     if (deltaTime.asMilliseconds() >= 50) {
+        if (speed_jump != -1 && speed_jump < 40 + JUMP) {
+            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - 20 + speed_jump));
+            speed_jump += JUMP;
+        } else {
+            speed_jump = -1;
+        }
         if (_rect_perso.left + 32 < 128) {
             _rect_perso = sf::IntRect(_rect_perso.left + 32, 0, 32, 32);
             deltaTime = sf::seconds(0);
@@ -185,8 +179,6 @@ void game_loop::level1()
         }
         _perso.setTextureRect(_rect_perso);
     }
-
-    
     win.display();
 }
 
@@ -211,6 +203,24 @@ void game_loop::level2()
             }
         }
     }
+    sf::RectangleShape rect = _perso;
+    win.draw(rect);
+    if (deltaTime.asMilliseconds() >= 50) {
+        if (speed_jump != -1 && speed_jump < 40 + JUMP) {
+            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - 20 + speed_jump));
+            speed_jump += JUMP;
+        } else {
+            speed_jump = -1;
+        }
+        if (_rect_perso.left + 32 < 128) {
+            _rect_perso = sf::IntRect(_rect_perso.left + 32, 0, 32, 32);
+            deltaTime = sf::seconds(0);
+        } else {
+            _rect_perso = sf::IntRect(0, 0, 32, 32);
+            deltaTime = sf::seconds(0);
+        }
+        _perso.setTextureRect(_rect_perso);
+    }
     win.display();
 }
 
@@ -234,6 +244,24 @@ void game_loop::level3()
                 }
             }
         }
+    }
+    sf::RectangleShape rect = _perso;
+    win.draw(rect);
+    if (deltaTime.asMilliseconds() >= 50) {
+        if (speed_jump != -1 && speed_jump < 40 + JUMP) {
+            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - 20 + speed_jump));
+            speed_jump += JUMP;
+        } else {
+            speed_jump = -1;
+        }
+        if (_rect_perso.left + 32 < 128) {
+            _rect_perso = sf::IntRect(_rect_perso.left + 32, 0, 32, 32);
+            deltaTime = sf::seconds(0);
+        } else {
+            _rect_perso = sf::IntRect(0, 0, 32, 32);
+            deltaTime = sf::seconds(0);
+        }
+        _perso.setTextureRect(_rect_perso);
     }
     win.display();
 }
