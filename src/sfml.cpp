@@ -23,9 +23,10 @@ game_loop::game_loop()
 
     _perso = sf::RectangleShape(sf::Vector2f(32, 32));
     _texture_perso = sf::Texture();
-    _texture_perso.loadFromFile("./ressources/character/TiM_anim2.png", sf::IntRect(0, 0, 32, 32));
+    _texture_perso.loadFromFile("./ressources/character/TiM_anim2.png");
     _perso.setTexture(&_texture_perso);
     _perso.setPosition(sf::Vector2f(100, 100));
+    _rect_perso = sf::IntRect(0, 0, 32, 32);
 
     this->menu_assets.resize(6);
     this->menu_assets[0].createRectangleShape("./ressources/menu/menu_back.png", (sf::Vector2f){1920,1080}, (sf::Vector2f){-30,0});
@@ -74,7 +75,7 @@ void game_loop::loop()
             this->level2();
         if (this->game_status == 6)
             this->level3();
-        deltaTime = clock.restart();
+        deltaTime += clock.restart();
     }
 }
 
@@ -174,11 +175,14 @@ void game_loop::level1()
 
 
 
-    if (deltaTime.asMilliseconds() >= 20) {
-        if (_rect_perso.left + 32 <= 128)
-            _rect_perso = sf::IntRect(_rect_perso.left + 32, _rect_perso.top, 32, 32);
-        else
-            _rect_perso = sf::IntRect(0, _rect_perso.top, 32, 32);
+    if (deltaTime.asMilliseconds() >= 50) {
+        if (_rect_perso.left + 32 < 128) {
+            _rect_perso = sf::IntRect(_rect_perso.left + 32, 0, 32, 32);
+            deltaTime = sf::seconds(0);
+        } else {
+            _rect_perso = sf::IntRect(0, 0, 32, 32);
+            deltaTime = sf::seconds(0);
+        }
         _perso.setTextureRect(_rect_perso);
     }
 

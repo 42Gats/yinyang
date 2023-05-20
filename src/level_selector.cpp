@@ -22,9 +22,9 @@ level_selector::level_selector()
 
 void level_selector::draw(sf::RenderWindow &win)
 {
-    for (int i = 0; i < selector_assets.size(); i++)
+    for (size_t i = 0; i < selector_assets.size(); i++)
         selector_assets[i].drawRectangleShape(win);
-    for (int i = 0; i < selector_text.size(); i++)
+    for (size_t i = 0; i < selector_text.size(); i++)
         selector_text[i].drawText(win);
 }
 
