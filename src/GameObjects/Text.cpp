@@ -34,6 +34,11 @@ void Text::createText(std::string sentence, std::string font, unsigned int size,
     font_tab.push_back(t);
 }
 
+void Text::colorText(int i, sf::Color color)
+{
+    text_tab[i].setFillColor(color);
+}
+
 void Text::drawText(sf::RenderWindow &window) const
 {
     auto it2 = font_tab.begin();

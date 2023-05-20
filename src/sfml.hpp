@@ -11,6 +11,7 @@
     #include "GameObjects/Text.hpp"
     #include "GameObjects/Rectangleshape.hpp"
     #include "Parser/Parser.hpp"
+    #include "level_selector.hpp"
     #define JUMP 3
     #define HEIGHT_JUMP 21
 
@@ -35,6 +36,7 @@ class game_loop {
         RectangleShape _rect;
         Text text;
         std::vector<RectangleShape> menu_assets;
+        level_selector selector_menu;
         int game_status;
 
 

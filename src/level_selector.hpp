@@ -8,13 +8,15 @@
 #ifndef LEVEL_SELECTOR_HPP_
 #define LEVEL_SELECTOR_HPP_
 
-#include "sfml.hpp"
-
+#include "GameObjects/Rectangleshape.hpp"
+#include "GameObjects/Text.hpp"
+#include "../includes/include.hpp"
 class level_selector {
     public:
         level_selector();
         void draw(sf::RenderWindow &win);
         void move(int moving_on);
+        int getLevelSelected();
     private:
         std::vector<RectangleShape> selector_assets;
         std::vector<Text> selector_text;

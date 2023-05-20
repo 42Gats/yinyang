@@ -15,6 +15,7 @@ class Text {
         void createText(std::string sentence, std::string font, unsigned int size, sf::Vector2f pos);
         void drawText(sf::RenderWindow &window) const;
         void setSentence(std::string sentence);
+        void colorText(int i, sf::Color color);
         sf::Vector2f getPos(int i);
         ~Text();
     protected:

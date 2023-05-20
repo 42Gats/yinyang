@@ -55,33 +55,47 @@ game_loop::game_loop()
 
 void game_loop::loop()
 {
-    while (win.isOpen()) {
+    while (win.isOpen())
+    {
         if (event() == 84)
             return;
-        win.clear(sf::Color::Black);
-        if (this->game_status == 1) {
+        if (this->game_status == 10)
+            win.clear(sf::Color::White);
+        else
+            win.clear(sf::Color::Black);
+        if (this->game_status == 1)
+        {
             win.setView(*view1);
             draw();
             win.display();
         }
-        if (this->game_status == 3) {
+        if (this->game_status == 3)
+        {
             win.setView(*view1);
             draw();
             win.display();
         }
-        if (this->game_status == 4) {
+        if (this->game_status == 4)
+        {
             win.setView(*view);
             this->level1();
         }
-        if (this->game_status == 5) {
+        if (this->game_status == 5)
+        {
             win.setView(*view);
             this->level2();
         }
-        if (this->game_status == 6) {
+        if (this->game_status == 6)
+        {
             win.setView(*view);
             this->level3();
+            if (this->game_status == 10)
+            {
+                selector_menu.draw(win);
+                win.display();
+            }
+            deltaTime += clock.restart();
         }
-        deltaTime += clock.restart();
     }
 }
 
@@ -127,6 +141,13 @@ int game_loop::event()
                 else
                     this->_color = sf::Color::White;
             }
+            // Selector menu
+            if (Event.key.code == sf::Keyboard::Right && this->game_status == 10) {
+                selector_menu.move(selector_menu.getLevelSelected() + 1);
+            }
+            if (Event.key.code == sf::Keyboard::Left && this->game_status == 10) {
+                selector_menu.move(selector_menu.getLevelSelected() - 1);
+            }
         }
     }
     return (0);
@@ -147,6 +168,9 @@ void game_loop::draw()
             this->menu_assets[5].drawRectangleShape(win);
         } else
             this->menu_assets[4].drawRectangleShape(win);
+    }
+    if (this->game_status == 10) {
+        selector_menu.draw(win);
     }
 }
 
