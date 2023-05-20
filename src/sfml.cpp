@@ -90,8 +90,6 @@ int game_loop::event()
         if (Event.type == sf::Event::KeyPressed) {
             if (Event.key.code == sf::Keyboard::Escape)
                 return (84);
-            if (Event.key.code == sf::Keyboard::R)
-                this->game_status = 3;
             if (Event.key.code == sf::Keyboard::M)
                 this->game_status = 1;
             if (Event.key.code == sf::Keyboard::Up)
