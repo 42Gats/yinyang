@@ -15,9 +15,12 @@
 class game_loop {
     public:
         game_loop();
-        ~game_loop() {};
+        ~game_loop() {
+            this->music.stop();
+            this->win.close();
+        };
         void loop();
-        void event();
+        int event();
         void draw();
 
         void level1();

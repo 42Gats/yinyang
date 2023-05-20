@@ -24,7 +24,7 @@ game_loop::game_loop()
     this->menu_assets[0].createRectangleShape("./ressources/menu/menu_back.png", (sf::Vector2f){1920,1080}, (sf::Vector2f){-30,0});
     this->menu_assets[1].createRectangleShape("./ressources/menu/play.png", (sf::Vector2f){200,200}, (sf::Vector2f){825,700});
     this->menu_assets[2].createRectangleShape("./ressources/menu/play_c.png", (sf::Vector2f){200,200}, (sf::Vector2f){825,700});
-    this->menu_assets[3].createRectangleShape("./ressources/menu/defeat_screen.png", (sf::Vector2f){1880,1040}, (sf::Vector2f){-30,0});
+    this->menu_assets[3].createRectangleShape("./ressources/menu/defeat_screen.jpg", (sf::Vector2f){1880,1040}, (sf::Vector2f){-30,0});
     this->menu_assets[4].createRectangleShape("./ressources/menu/return.png", (sf::Vector2f){200,200}, (sf::Vector2f){1470,800});
     this->menu_assets[5].createRectangleShape("./ressources/menu/return_c.png", (sf::Vector2f){200,200}, (sf::Vector2f){1470,800});
     std::ifstream infile("./ressources/maps/level1.txt");
@@ -48,32 +48,62 @@ game_loop::game_loop()
 void game_loop::loop()
 {
     while (win.isOpen()) {
-        event();
+        if (event() == 84)
+            return;
         win.clear(sf::Color::Black);
-        // draw();
-        // win.display();
-        this->level1();
+        if (this->game_status == 1) {
+            draw();
+            win.display();
+        }
+        if (this->game_status == 3) {
+            draw();
+            win.display();
+        }
+        if (this->game_status == 4)
+            this->level1();
+        if (this->game_status == 5)
+            this->level2();
+        if (this->game_status == 6)
+            this->level3();
     }
 }
 
-void game_loop::event()
+int game_loop::event()
 {
     while (win.pollEvent(Event)) {
+         if (this->game_status == 1 && Event.type == sf::Event::MouseButtonPressed && Event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(win);
+            sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
+            if (this->menu_assets[2].dimensions(0).contains(mousePositionFloat)) {
+                    this->game_status = 3;
+            }
+        }
+        if (this->game_status == 3 && Event.type == sf::Event::MouseButtonPressed && Event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(win);
+            sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
+            if (this->menu_assets[5].dimensions(0).contains(mousePositionFloat)) {
+                    this->game_status = 1;
+            }
+        }
         if (Event.type == sf::Event::Closed)
-            exit(0);
+            return (84);
         if (Event.type == sf::Event::KeyPressed) {
             if (Event.key.code == sf::Keyboard::Escape)
-                exit(0);
+                return (84);
             if (Event.key.code == sf::Keyboard::R)
-                this->Inputs.push_front(RESTART);
+                this->game_status = 3;
             if (Event.key.code == sf::Keyboard::M)
-                this->Inputs.push_front(MENU);
+                this->game_status = 1;
             if (Event.key.code == sf::Keyboard::Up)
-                this->Inputs.push_front(UP);
-            if (Event.key.code == sf::Keyboard::Left)
-                this->Inputs.push_front(LEFT);
-            if (Event.key.code == sf::Keyboard::Right)
-                this->Inputs.push_front(RIGHT);
+                this->game_status = 1;
+            if (Event.key.code == sf::Keyboard::Left) {
+                if (this->game_status > 4)
+                    this->game_status -= 1;
+            }
+            if (Event.key.code == sf::Keyboard::Right) {
+                if (this->game_status < 6)
+                    this->game_status += 1;
+            }
             if (Event.key.code == sf::Keyboard::Enter){
                 if (this->_color == sf::Color::White)
                     this->_color = sf::Color::Black;
@@ -82,6 +112,7 @@ void game_loop::event()
             }
         }
     }
+    return (0);
 }
 
 void game_loop::draw()
