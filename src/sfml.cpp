@@ -152,11 +152,13 @@ void game_loop::level1()
         for (j = 0; j < _map1[i].size(); j++) {
             for (size_t k = 0; k < color.size(); k++) {
                 if (_map1[i][j] == color[k][0]) {
+                    _rect_tab.clear();
                     sf::RectangleShape rect;
                     rect.setSize(sf::Vector2f(size[k], size[k]));
                     rect.setFillColor(color2[k]);
                     rect.setPosition(j * 20 + (10 - (size[k]/2)), i * 20 + (10 - (size[k]/2)));
                     win.draw(rect);
+                    _rect_tab.push_back(rect);
                 }
             }
         }
@@ -164,8 +166,8 @@ void game_loop::level1()
     sf::RectangleShape rect = _perso;
     win.draw(rect);
     if (deltaTime.asMilliseconds() >= 50) {
-        if (speed_jump != -1 && speed_jump < 40 + JUMP) {
-            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - 20 + speed_jump));
+        if (speed_jump != -1 && speed_jump < HEIGHT_JUMP * 2 + JUMP) {
+            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
             speed_jump += JUMP;
         } else {
             speed_jump = -1;
@@ -194,11 +196,13 @@ void game_loop::level2()
         for (j = 0; j < _map2[i].size(); j++) {
             for (size_t k = 0; k < color.size(); k++) {
                 if (_map2[i][j] == color[k][0]) {
+                    _rect_tab.clear();
                     sf::RectangleShape rect;
                     rect.setSize(sf::Vector2f(size[k], size[k]));
                     rect.setFillColor(color2[k]);
                     rect.setPosition(j * 20 + (10 - (size[k]/2)), i * 20 + (10 - (size[k]/2)));
                     win.draw(rect);
+                    _rect_tab.push_back(rect);
                 }
             }
         }
@@ -206,8 +210,8 @@ void game_loop::level2()
     sf::RectangleShape rect = _perso;
     win.draw(rect);
     if (deltaTime.asMilliseconds() >= 50) {
-        if (speed_jump != -1 && speed_jump < 40 + JUMP) {
-            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - 20 + speed_jump));
+        if (speed_jump != -1 && speed_jump < HEIGHT_JUMP * 2 + JUMP) {
+            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
             speed_jump += JUMP;
         } else {
             speed_jump = -1;
@@ -236,11 +240,13 @@ void game_loop::level3()
         for (j = 0; j < _map3[i].size(); j++) {
             for (size_t k = 0; k < color.size(); k++) {
                 if (_map3[i][j] == color[k][0]) {
+                    _rect_tab.clear();
                     sf::RectangleShape rect;
                     rect.setSize(sf::Vector2f(size[k], size[k]));
                     rect.setFillColor(color2[k]);
                     rect.setPosition(j * 20 + (10 - (size[k]/2)), i * 20 + (10 - (size[k]/2)));
                     win.draw(rect);
+                    _rect_tab.push_back(rect);
                 }
             }
         }
@@ -248,8 +254,8 @@ void game_loop::level3()
     sf::RectangleShape rect = _perso;
     win.draw(rect);
     if (deltaTime.asMilliseconds() >= 50) {
-        if (speed_jump != -1 && speed_jump < 40 + JUMP) {
-            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - 20 + speed_jump));
+        if (speed_jump != -1 && speed_jump < HEIGHT_JUMP * 2 + JUMP) {
+            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
             speed_jump += JUMP;
         } else {
             speed_jump = -1;

@@ -12,6 +12,7 @@
     #include "GameObjects/Rectangleshape.hpp"
     #include "Parser/Parser.hpp"
     #define JUMP 5
+    #define HEIGHT_JUMP 20
 
 class game_loop {
     public:
@@ -47,6 +48,7 @@ class game_loop {
         sf::Time deltaTime;
         int speed_jump;
 
+        std::vector<sf::RectangleShape> _rect_tab = {};
 
         sf::RectangleShape _perso;
         sf::Texture _texture_perso;
