@@ -233,13 +233,10 @@ void game_loop::draw()
         } else
             this->menu_assets[13].drawRectangleShape(win);
     }
-
 }
 
 void game_loop::jump()
 {
-    sf::RectangleShape rect = _perso;
-    win.draw(rect);
     if (deltaTime.asMilliseconds() >= 50) {
         movement += 10;
 
@@ -280,6 +277,13 @@ void game_loop::jump()
         _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
         this->game_status = 3;
     }
+    for (size_t i = 0; i < _rect_tab.size(); i++) {
+        if (_perso.getGlobalBounds().intersects(_rect_tab[0].getGlobalBounds())) {
+            _perso.setPosition(sf::Vector2f(_perso.getPosition().x ,_rect_tab[i].getPosition().y - _perso.getGlobalBounds().height));
+        }
+    }
+    sf::RectangleShape rect = _perso;
+    win.draw(rect);
 }
 
 void game_loop::level1()
