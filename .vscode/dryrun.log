@@ -1,0 +1,12 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/raccoon/jam/yinyang'
+g++ -Wall -Wextra -Werror -g   -c -o src/savejump.o src/savejump.cpp
+g++ -Wall -Wextra -Werror -g   -c -o src/Parser/Parser.o src/Parser/Parser.cpp
+g++ -Wall -Wextra -Werror -g   -c -o src/main.o src/main.cpp
+g++ -Wall -Wextra -Werror -g   -c -o src/level_selector.o src/level_selector.cpp
+g++ -Wall -Wextra -Werror -g   -c -o src/sfml.o src/sfml.cpp
+g++ -Wall -Wextra -Werror -g   -c -o src/GameObjects/Rectangleshape.o src/GameObjects/Rectangleshape.cpp
+g++ -Wall -Wextra -Werror -g   -c -o src/GameObjects/Text.o src/GameObjects/Text.cpp
+g++ -Wall -Wextra -Werror -g ./src/savejump.o ./src/Parser/Parser.o ./src/main.o ./src/level_selector.o ./src/sfml.o ./src/GameObjects/Rectangleshape.o ./src/GameObjects/Text.o -o jam -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+make: Leaving directory '/home/raccoon/jam/yinyang'
+ 

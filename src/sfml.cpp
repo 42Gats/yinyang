@@ -247,17 +247,23 @@ void game_loop::jump()
             sf::Color fillcolor = _rect_tab[i].getFillColor();
 
             if (_color == sf::Color::Black && fillcolor == sf::Color::White) {
-                sf::FloatRect entity = _rect_tab[i].getGlobalBounds();
+                sf::RectangleShape rect = _rect_tab[i];
+                rect.setPosition(sf::Vector2f(rect.getPosition().x, rect.getPosition().y));
+                sf::FloatRect entity = rect.getGlobalBounds();
                 sf::FloatRect player = _perso.getGlobalBounds();
                 if (player.intersects(entity)) {
                     speed_jump = HEIGHT_JUMP;
+                    _perso.setPosition(sf::Vector2f(_perso.getPosition().x, rect.getPosition().y - player.height - 2));
                 }
             }
             if (_color == sf::Color::White && fillcolor == sf::Color::Black) {
-                sf::FloatRect entity = _rect_tab[i].getGlobalBounds();
+                sf::RectangleShape rect = _rect_tab[i];
+                rect.setPosition(sf::Vector2f(rect.getPosition().x, rect.getPosition().y));
+                sf::FloatRect entity = rect.getGlobalBounds();
                 sf::FloatRect player = _perso.getGlobalBounds();
                 if (player.intersects(entity)) {
                     speed_jump = HEIGHT_JUMP;
+                    _perso.setPosition(sf::Vector2f(_perso.getPosition().x, rect.getPosition().y - player.height - 2));
                 }
             }
         }
@@ -278,8 +284,31 @@ void game_loop::jump()
         this->game_status = 3;
     }
     for (size_t i = 0; i < _rect_tab.size(); i++) {
-        if (_perso.getGlobalBounds().intersects(_rect_tab[0].getGlobalBounds())) {
-            _perso.setPosition(sf::Vector2f(_perso.getPosition().x ,_rect_tab[i].getPosition().y - _perso.getGlobalBounds().height));
+        sf::Color fillcolor = _rect_tab[i].getFillColor();
+
+        if (_color == sf::Color::Black && fillcolor == sf::Color::White) {
+            sf::RectangleShape rect = _rect_tab[i];
+            rect.setPosition(sf::Vector2f(rect.getPosition().x, rect.getPosition().y + 10));
+            sf::FloatRect entity = rect.getGlobalBounds();
+            sf::FloatRect player = _perso.getGlobalBounds();
+            if (player.intersects(entity)) {
+                movement = 0;
+                speed_jump = HEIGHT_JUMP;
+                _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
+                this->game_status = 3;
+            }
+        }
+        if (_color == sf::Color::White && fillcolor == sf::Color::Black) {
+            sf::RectangleShape rect = _rect_tab[i];
+            rect.setPosition(sf::Vector2f(rect.getPosition().x, rect.getPosition().y + 10));
+            sf::FloatRect entity = rect.getGlobalBounds();
+            sf::FloatRect player = _perso.getGlobalBounds();
+            if (player.intersects(entity)) {
+                movement = 0;
+                speed_jump = HEIGHT_JUMP;
+                _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
+                this->game_status = 3;
+            }
         }
     }
     sf::RectangleShape rect = _perso;
