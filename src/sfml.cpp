@@ -24,13 +24,27 @@ game_loop::game_loop()
     _perso.setTexture(&_texture_perso);
     _perso.setPosition(sf::Vector2f(100, 100));
     _rect_perso = sf::IntRect(0, 0, 32, 32);
-    this->menu_assets.resize(6);
+    this->menu_assets.resize(15);
     this->menu_assets[0].createRectangleShape("./ressources/menu/menu_back.png", (sf::Vector2f){1920,1080}, (sf::Vector2f){-30,0});
     this->menu_assets[1].createRectangleShape("./ressources/menu/play.png", (sf::Vector2f){200,200}, (sf::Vector2f){825,700});
     this->menu_assets[2].createRectangleShape("./ressources/menu/play_c.png", (sf::Vector2f){200,200}, (sf::Vector2f){825,700});
     this->menu_assets[3].createRectangleShape("./ressources/menu/defeat_screen.jpg", (sf::Vector2f){1880,1040}, (sf::Vector2f){-30,0});
     this->menu_assets[4].createRectangleShape("./ressources/menu/return.png", (sf::Vector2f){200,200}, (sf::Vector2f){1470,800});
     this->menu_assets[5].createRectangleShape("./ressources/menu/return_c.png", (sf::Vector2f){200,200}, (sf::Vector2f){1470,800});
+    this->menu_assets[6].createRectangleShape("./ressources/menu/pause_menu.png", (sf::Vector2f){1000,700}, (sf::Vector2f){450,150});
+    this->menu_assets[7].createRectangleShape("./ressources/menu/play.png", (sf::Vector2f){100,100}, (sf::Vector2f){675,650});
+    this->menu_assets[8].createRectangleShape("./ressources/menu/play_c.png", (sf::Vector2f){100,100}, (sf::Vector2f){675,650});
+    this->menu_assets[9].createRectangleShape("./ressources/menu/return.png", (sf::Vector2f){100,100}, (sf::Vector2f){1125,650});
+    this->menu_assets[10].createRectangleShape("./ressources/menu/return_c.png", (sf::Vector2f){100,100}, (sf::Vector2f){1125,650});
+    this->menu_assets[11].createRectangleShape("./ressources/menu/more.png", (sf::Vector2f){50,50}, (sf::Vector2f){770,470});
+    this->menu_assets[12].createRectangleShape("./ressources/menu/more_c.png", (sf::Vector2f){50,50}, (sf::Vector2f){770,470});
+    this->menu_assets[13].createRectangleShape("./ressources/menu/less.png", (sf::Vector2f){50,50}, (sf::Vector2f){1070,470});
+    this->menu_assets[14].createRectangleShape("./ressources/menu/less_c.png", (sf::Vector2f){50,50}, (sf::Vector2f){1070,470});
+    this->text.createText("0", "./assets/arial.ttf", 50, (sf::Vector2f){920, 470});
+    this->text.colorText(0, sf::Color::White);
+    this->song_volume = 50;
+    this->save_game = 4;
+    this->text.setSentence(std::to_string(this->song_volume));
     this->view = new sf::View(sf::FloatRect(0, 0, 640, 230));
     this->view1 = new sf::View(sf::FloatRect(0, 0, 1920, 1080));
     std::ifstream infile("./ressources/maps/level1.txt");
@@ -59,7 +73,7 @@ void game_loop::loop()
     {
         if (event() == 84)
             return;
-        if (this->game_status == 10)
+        if (this->game_status == 10 || this->game_status == 7)
             win.clear(sf::Color::White);
         else
             win.clear(sf::Color::Black);
@@ -70,6 +84,12 @@ void game_loop::loop()
             win.display();
         }
         if (this->game_status == 3)
+        {
+            win.setView(*view1);
+            draw();
+            win.display();
+        }
+        if (this->game_status == 7)
         {
             win.setView(*view1);
             draw();
@@ -106,14 +126,36 @@ int game_loop::event()
             sf::Vector2i mousePosition = sf::Mouse::getPosition(win);
             sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
             if (this->menu_assets[2].dimensions(0).contains(mousePositionFloat)) {
-                    this->game_status = 10;
+                this->game_status = 10;
             }
         }
         if (this->game_status == 3 && Event.type == sf::Event::MouseButtonPressed && Event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(win);
             sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
             if (this->menu_assets[5].dimensions(0).contains(mousePositionFloat)) {
-                    this->game_status = 1;
+                this->game_status = 1;
+            }
+        }
+        if (this->game_status == 7 && Event.type == sf::Event::MouseButtonPressed && Event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(win);
+            sf::Vector2f mousePositionFloat(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
+            if (this->menu_assets[10].dimensions(0).contains(mousePositionFloat)) {
+                this->game_status = 1;
+            }
+            if (this->menu_assets[8].dimensions(0).contains(mousePositionFloat)) {
+                this->game_status = this->save_game;
+            }
+            if (sf::Mouse::getPosition(win).x >= 740 && sf::Mouse::getPosition(win).x <= 790 && sf::Mouse::getPosition(win).y >= 445 && sf::Mouse::getPosition(win).y <= 495) {
+                if (this->song_volume < 100)
+                    this->song_volume += 10;
+                this->text.setSentence(std::to_string(this->song_volume));
+                this->music.setVolume(this->song_volume);
+            }
+            if (sf::Mouse::getPosition(win).x >= 1040 && sf::Mouse::getPosition(win).x <= 1090 && sf::Mouse::getPosition(win).y >= 445 && sf::Mouse::getPosition(win).y <= 495) {
+                if (this->song_volume > 0)
+                    this->song_volume -= 10;
+                this->text.setSentence(std::to_string(this->song_volume));
+                this->music.setVolume(this->song_volume);
             }
         }
         if (Event.type == sf::Event::Closed)
@@ -145,6 +187,10 @@ int game_loop::event()
             if (Event.key.code == sf::Keyboard::Enter && this->game_status == 10) {
                 this->game_status = selector_menu.getLevelSelected() + 3;
             }
+            if (Event.key.code == sf::Keyboard::A && this->game_status <= 6 && this->game_status >= 4) {
+                this->save_game = this->game_status;
+                this->game_status = 7;
+            }
         }
     }
     return (0);
@@ -166,6 +212,28 @@ void game_loop::draw()
         } else
             this->menu_assets[4].drawRectangleShape(win);
     }
+    if (this->game_status == 7) {
+        this->menu_assets[6].drawRectangleShape(win);
+        this->text.setSentence(std::to_string(this->song_volume));
+        this->text.drawText(win);
+        if (sf::Mouse::getPosition(win).x >= 675 && sf::Mouse::getPosition(win).x <= 775 && sf::Mouse::getPosition(win).y >= 600 && sf::Mouse::getPosition(win).y <= 700) {
+            this->menu_assets[8].drawRectangleShape(win);
+        } else
+            this->menu_assets[7].drawRectangleShape(win);
+        if (sf::Mouse::getPosition(win).x >= 1125 && sf::Mouse::getPosition(win).x <= 1225 && sf::Mouse::getPosition(win).y >= 600 && sf::Mouse::getPosition(win).y <= 700) {
+            this->menu_assets[10].drawRectangleShape(win);
+        } else
+            this->menu_assets[9].drawRectangleShape(win);
+        if (sf::Mouse::getPosition(win).x >= 740 && sf::Mouse::getPosition(win).x <= 790 && sf::Mouse::getPosition(win).y >= 445 && sf::Mouse::getPosition(win).y <= 495) {
+            this->menu_assets[12].drawRectangleShape(win);
+        } else
+            this->menu_assets[11].drawRectangleShape(win);
+        if (sf::Mouse::getPosition(win).x >= 1040 && sf::Mouse::getPosition(win).x <= 1090 && sf::Mouse::getPosition(win).y >= 445 && sf::Mouse::getPosition(win).y <= 495) {
+            this->menu_assets[14].drawRectangleShape(win);
+        } else
+            this->menu_assets[13].drawRectangleShape(win);
+    }
+
 }
 
 void game_loop::jump()

@@ -38,6 +38,7 @@ class game_loop {
         std::vector<RectangleShape> menu_assets;
         level_selector selector_menu;
         int game_status;
+        int save_game;
 
 
         std::map<int, std::string> _map1;
@@ -47,6 +48,7 @@ class game_loop {
         std::list<Input> Inputs;
         sf::Event Event;
         sf::Music music;
+        int song_volume;
 
         sf::Clock clock;
         sf::Time deltaTime;
