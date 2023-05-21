@@ -64,7 +64,7 @@ game_loop::game_loop()
         this->_map3[z] = line3;
     this->_color = sf::Color::White;
 
-    this->speed_jump = -1;
+    this->speed_jump = HEIGHT_JUMP;
 }
 
 void game_loop::loop()
@@ -166,7 +166,7 @@ int game_loop::event()
             if (Event.key.code == sf::Keyboard::M)
                 this->game_status = 1;
             if (Event.key.code == sf::Keyboard::Space && this->game_status != 1) {
-                if (speed_jump == -1)
+                if (speed_jump == HEIGHT_JUMP)
                     speed_jump = 0;
             }
             if (Event.key.code == sf::Keyboard::Enter && this->game_status != 10) {
@@ -243,28 +243,24 @@ void game_loop::jump()
     if (deltaTime.asMilliseconds() >= 50) {
         movement += 10;
 
-        if (speed_jump != -1) {
-            _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
-            speed_jump += JUMP;
-        }
+        _perso.setPosition(sf::Vector2f(_perso.getPosition().x, _perso.getPosition().y - HEIGHT_JUMP + speed_jump));
+        speed_jump += JUMP;
 
         for (size_t i = 0; i < _rect_tab.size(); i++) {
             sf::Color fillcolor = _rect_tab[i].getFillColor();
 
             if (_color == sf::Color::Black && fillcolor == sf::Color::White) {
-                std::cout << "white " << std::endl;
                 sf::FloatRect entity = _rect_tab[i].getGlobalBounds();
                 sf::FloatRect player = _perso.getGlobalBounds();
                 if (player.intersects(entity)) {
-                    speed_jump = -1;
+                    speed_jump = HEIGHT_JUMP;
                 }
             }
             if (_color == sf::Color::White && fillcolor == sf::Color::Black) {
-                std::cout << "black " << std::endl;
                 sf::FloatRect entity = _rect_tab[i].getGlobalBounds();
                 sf::FloatRect player = _perso.getGlobalBounds();
                 if (player.intersects(entity)) {
-                    speed_jump = -1;
+                    speed_jump = HEIGHT_JUMP;
                 }
             }
         }
@@ -277,6 +273,12 @@ void game_loop::jump()
             deltaTime = sf::seconds(0);
         }
         _perso.setTextureRect(_rect_perso);
+    }
+    if (_perso.getPosition().y >= 260) {
+        movement = 0;
+        speed_jump = HEIGHT_JUMP;
+        _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
+        this->game_status = 3;
     }
 }
 
