@@ -71,6 +71,7 @@ void game_loop::loop()
 {
     while (win.isOpen())
     {
+        std::cerr << "jump:" << jump_ok << std::endl;
         if (event() == 84)
             return;
         if (this->game_status == 10 || this->game_status == 7)
@@ -116,6 +117,7 @@ void game_loop::loop()
             win.display();
         }
         deltaTime += clock.restart();
+        std::cerr << "jump:" << jump_ok << std::endl;
     }
 }
 
@@ -166,7 +168,7 @@ int game_loop::event()
             if (Event.key.code == sf::Keyboard::M)
                 this->game_status = 1;
             if (Event.key.code == sf::Keyboard::Space && this->game_status != 1) {
-                if (speed_jump == HEIGHT_JUMP)
+                if (jump_ok == true)
                     speed_jump = 0;
             }
             if (Event.key.code == sf::Keyboard::Enter && this->game_status != 10) {
@@ -252,8 +254,13 @@ void game_loop::jump()
                 sf::FloatRect entity = rect.getGlobalBounds();
                 sf::FloatRect player = _perso.getGlobalBounds();
                 if (player.intersects(entity)) {
+                    std::cerr << "ok" << std::endl;
                     speed_jump = HEIGHT_JUMP;
+                    jump_ok = true;
                     _perso.setPosition(sf::Vector2f(_perso.getPosition().x, rect.getPosition().y - player.height - 2));
+                    break;
+                } else {
+                    jump_ok = false;
                 }
             }
             if (_color == sf::Color::White && fillcolor == sf::Color::Black) {
@@ -262,8 +269,13 @@ void game_loop::jump()
                 sf::FloatRect entity = rect.getGlobalBounds();
                 sf::FloatRect player = _perso.getGlobalBounds();
                 if (player.intersects(entity)) {
+                    std::cerr << "ok" << std::endl;
                     speed_jump = HEIGHT_JUMP;
+                    jump_ok = true;
                     _perso.setPosition(sf::Vector2f(_perso.getPosition().x, rect.getPosition().y - player.height - 2));
+                    break;
+                } else {
+                    jump_ok = false;
                 }
             }
         }
@@ -280,8 +292,11 @@ void game_loop::jump()
     if (_perso.getPosition().y >= 260) {
         movement = 0;
         speed_jump = HEIGHT_JUMP;
+        std::cerr << "trop bas" << std::endl;
+        jump_ok = true;
         _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
         this->game_status = 3;
+        this->_color = sf::Color::White;
     }
     for (size_t i = 0; i < _rect_tab.size(); i++) {
         sf::Color fillcolor = _rect_tab[i].getFillColor();
@@ -294,8 +309,11 @@ void game_loop::jump()
             if (player.intersects(entity)) {
                 movement = 0;
                 speed_jump = HEIGHT_JUMP;
+                std::cerr << "collision" << std::endl;
+                jump_ok = true;
                 _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
                 this->game_status = 3;
+                this->_color = sf::Color::White;
             }
         }
         if (_color == sf::Color::White && fillcolor == sf::Color::Black) {
@@ -306,8 +324,11 @@ void game_loop::jump()
             if (player.intersects(entity)) {
                 movement = 0;
                 speed_jump = HEIGHT_JUMP;
+                std::cerr << "collision" << std::endl;
+                jump_ok = true;
                 _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
                 this->game_status = 3;
+                this->_color = sf::Color::White;
             }
         }
     }
@@ -338,7 +359,9 @@ void game_loop::level1()
             }
         }
     }
+    std::cerr << "here" << std::endl;
     jump();
+    std::cerr << "here2" << std::endl;
     win.display();
 }
 
@@ -365,7 +388,9 @@ void game_loop::level2()
             }
         }
     }
+    std::cerr << "here" << std::endl;
     jump();
+    std::cerr << "here2" << std::endl;
     win.display();
 }
 
@@ -392,6 +417,8 @@ void game_loop::level3()
             }
         }
     }
+    std::cerr << "here" << std::endl;
     jump();
+    std::cerr << "here2" << std::endl;
     win.display();
 }

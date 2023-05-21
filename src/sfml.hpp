@@ -60,6 +60,7 @@ class game_loop {
         sf::View *view1;
 
         int movement = 0;
+        bool jump_ok = true;
 
         sf::RectangleShape _perso;
         sf::Texture _texture_perso;
