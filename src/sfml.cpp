@@ -252,7 +252,7 @@ void game_loop::jump()
                 sf::FloatRect entity = rect.getGlobalBounds();
                 sf::FloatRect player = _perso.getGlobalBounds();
                 if (player.intersects(entity)) {
-                    speed_jump = HEIGHT_JUMP;
+                    speed_jump = HEIGHT_JUMP * 2;
                     jump_ok = true;
                     _perso.setPosition(sf::Vector2f(_perso.getPosition().x, rect.getPosition().y - player.height - 2));
                     break;
@@ -266,7 +266,7 @@ void game_loop::jump()
                 sf::FloatRect entity = rect.getGlobalBounds();
                 sf::FloatRect player = _perso.getGlobalBounds();
                 if (player.intersects(entity)) {
-                    speed_jump = HEIGHT_JUMP;
+                    speed_jump =  HEIGHT_JUMP * 2;
                     jump_ok = true;
                     _perso.setPosition(sf::Vector2f(_perso.getPosition().x, rect.getPosition().y - player.height - 2));
                     break;
@@ -287,7 +287,7 @@ void game_loop::jump()
     }
     if (_perso.getPosition().y >= 260) {
         movement = 0;
-        speed_jump = HEIGHT_JUMP;
+        speed_jump =  HEIGHT_JUMP * 2;
         jump_ok = true;
         _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
         this->game_status = 3;
@@ -303,7 +303,7 @@ void game_loop::jump()
             sf::FloatRect player = _perso.getGlobalBounds();
             if (player.intersects(entity)) {
                 movement = 0;
-                speed_jump = HEIGHT_JUMP;
+                speed_jump =  HEIGHT_JUMP * 2;
                 jump_ok = true;
                 _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
                 this->game_status = 3;
@@ -317,7 +317,7 @@ void game_loop::jump()
             sf::FloatRect player = _perso.getGlobalBounds();
             if (player.intersects(entity)) {
                 movement = 0;
-                speed_jump = HEIGHT_JUMP;
+                speed_jump =  HEIGHT_JUMP * 2;
                 jump_ok = true;
                 _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
                 this->game_status = 3;
