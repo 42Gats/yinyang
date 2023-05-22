@@ -324,10 +324,12 @@ void game_loop::jump()
                 this->_color = sf::Color::White;
             }
         }
-        if (movement >= 1830 && this->game_status < 6)
+        if (this->movement >= 630 && this->game_status < 6) {
             this->game_status++;
-        else if (movement >= 1830)
-            this->game_status = 4;
+            this->movement = 0;
+            if (this->game_status == 7)
+                this->game_status = 1;
+        }
     }
     sf::RectangleShape rect = _perso;
     win.draw(rect);
