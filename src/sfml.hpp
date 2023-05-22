@@ -66,6 +66,11 @@ class game_loop {
         sf::Texture _texture_perso;
         sf::IntRect _rect_perso;
 
+        sf::Music music_jump;
+        sf::Music music_jump_end;
+        sf::Music music_end;
+        sf::Music death;
+
 };
 
 #endif /* !SFML_HPP_ */
