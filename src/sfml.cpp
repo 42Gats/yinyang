@@ -11,9 +11,25 @@ game_loop::game_loop()
 {
     std::string filepath = "./ressources/music/no1.ogg";
     if (music.openFromFile(filepath)) {
-        music.play();
+        // music.play();
         music.setVolume(50);
         music.setLoop(true);
+    }
+    if (music_jump.openFromFile("./ressources/music/jump.ogg")) {
+        music_jump.setVolume(50);
+        music_jump.setLoop(false);
+    }
+    if (music_jump_end.openFromFile("./ressources/music/arrive-jump.ogg")) {
+        music_jump_end.setVolume(50);
+        music_jump_end.setLoop(false);
+    }
+    if (music_end.openFromFile("./ressources/music/level-reussi.ogg")) {
+        music_end.setVolume(50);
+        music_end.setLoop(false);
+    }
+    if (death.openFromFile("./ressources/music/kilenemy.ogg")) {
+        death.setVolume(50);
+        death.setLoop(false);
     }
     win.create(sf::VideoMode(1920, 1080), "YinYang");
     win.setFramerateLimit(60);
@@ -150,12 +166,21 @@ int game_loop::event()
                     this->song_volume += 10;
                 this->text.setSentence(std::to_string(this->song_volume));
                 this->music.setVolume(this->song_volume);
+        death.play();
+                this->music_end.setVolume(this->song_volume);
+                this->music_jump.setVolume(this->song_volume);
+                this->music_jump_end.setVolume(this->song_volume);
+                this->death.setVolume(this->song_volume);
             }
             if (sf::Mouse::getPosition(win).x >= 1040 && sf::Mouse::getPosition(win).x <= 1090 && sf::Mouse::getPosition(win).y >= 445 && sf::Mouse::getPosition(win).y <= 495) {
                 if (this->song_volume > 0)
                     this->song_volume -= 10;
                 this->text.setSentence(std::to_string(this->song_volume));
                 this->music.setVolume(this->song_volume);
+                this->music_end.setVolume(this->song_volume);
+                this->music_jump.setVolume(this->song_volume);
+                this->music_jump_end.setVolume(this->song_volume);
+                this->death.setVolume(this->song_volume);
             }
         }
         if (Event.type == sf::Event::Closed)
@@ -168,6 +193,8 @@ int game_loop::event()
             if (Event.key.code == sf::Keyboard::Space && this->game_status != 1) {
                 if (jump_ok == true)
                     speed_jump = 0;
+                music_jump_end.stop();
+                music_jump.play();
             }
             if (Event.key.code == sf::Keyboard::Enter && this->game_status != 10) {
                 if (this->_color == sf::Color::White)
@@ -255,6 +282,8 @@ void game_loop::jump()
                     speed_jump = HEIGHT_JUMP * 2;
                     jump_ok = true;
                     _perso.setPosition(sf::Vector2f(_perso.getPosition().x, rect.getPosition().y - player.height - 2));
+                    music_jump.stop();
+                    music_jump_end.play();
                     break;
                 } else {
                     jump_ok = false;
@@ -269,6 +298,8 @@ void game_loop::jump()
                     speed_jump =  HEIGHT_JUMP * 2;
                     jump_ok = true;
                     _perso.setPosition(sf::Vector2f(_perso.getPosition().x, rect.getPosition().y - player.height - 2));
+                    music_jump.stop();
+                    music_jump_end.play();
                     break;
                 } else {
                     jump_ok = false;
@@ -290,6 +321,8 @@ void game_loop::jump()
         speed_jump =  HEIGHT_JUMP * 2;
         jump_ok = true;
         _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
+        music_jump.stop();
+        death.play();
         this->game_status = 3;
         this->_color = sf::Color::White;
     }
@@ -306,6 +339,8 @@ void game_loop::jump()
                 speed_jump =  HEIGHT_JUMP * 2;
                 jump_ok = true;
                 _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
+                music_jump.stop();
+                death.play();
                 this->game_status = 3;
                 this->_color = sf::Color::White;
             }
@@ -320,6 +355,8 @@ void game_loop::jump()
                 speed_jump =  HEIGHT_JUMP * 2;
                 jump_ok = true;
                 _perso.setPosition(sf::Vector2f(_perso.getPosition().x, 100));
+                music_jump.stop();
+                death.play();
                 this->game_status = 3;
                 this->_color = sf::Color::White;
             }
@@ -327,8 +364,14 @@ void game_loop::jump()
         if (this->movement >= 1630 && this->game_status < 6) {
             this->game_status++;
             this->movement = 0;
-            if (this->game_status == 7)
+            music_jump.stop();
+            music_end.play();
+                _perso.setPosition(sf::Vector2f(_perso.getPosition().x, -100));
+            if (this->game_status == 7) {
                 this->game_status = 1;
+                music_jump.stop();
+                music_end.play();
+            }
         }
     }
     sf::RectangleShape rect = _perso;
