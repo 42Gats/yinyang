@@ -324,7 +324,7 @@ void game_loop::jump()
                 this->_color = sf::Color::White;
             }
         }
-        if (this->movement >= 630 && this->game_status < 6) {
+        if (this->movement >= 1630 && this->game_status < 6) {
             this->game_status++;
             this->movement = 0;
             if (this->game_status == 7)
