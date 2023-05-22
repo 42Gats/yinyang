@@ -22,6 +22,7 @@ class level_selector {
         std::vector<Text> selector_text;
         int is_moving;
         int level_selected;
+        int animation;
 };
 
 #endif /* !LEVEL_SELECTOR_HPP_ */
